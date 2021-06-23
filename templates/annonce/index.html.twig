@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annonce
+{% endblock %}
+
+{% block body %}
+
+	
+	<div class="container my-5">
+		<div class="row">
+		{% for annonces in annonce %}
+			<div class="col-md-4">
+				<div class="card mb-3">
+					<h5 class="card-header">2/ {{ annonces.price }} /mois</h5>
+
+					<img src="  {{annonces.ImageCover}}" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveaspectratio="xMidYMid slice" viewbox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
+						<rect width="100%" height="100%" fill="#868e96"></rect>
+						<text x="50%" y="50%" fill="#dee2e6" dy=".3em"></text>
+					</img>
+					<div class="card-body">
+						<p class="card-text">{{ annonces.description}}</p>
+					</div>
+
+					<div class="card-body">
+						<a href="#" class="card-link btn btn-primary">Détails</a>
+					</div>
+					<div class="card-footer text-muted text-center">
+						{# {{annonces.creat_at }} #}2jours
+						<i class="fas fa-map-marker-alt"></i>
+						<strong>{{annonces.adresse}}</strong>
+					</div>
+				</div>
+			</div>
+		{% endfor %}	
+		</div>
+	</div>
+	
+{% endblock %}
