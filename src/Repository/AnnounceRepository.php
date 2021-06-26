@@ -47,4 +47,17 @@ class AnnounceRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    // /**
+    // * @return Announce[] //Returns an array of Announce objects
+    // */
+    // public function findLatest(): array
+    // {
+    //     return $this->findViviblequery()
+    //         ->setMaxResults(10)
+    //         ->getQuery()
+    //         ->getResult()
+    //     ;
+    // }
+    
 }

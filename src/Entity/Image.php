@@ -24,6 +24,7 @@ class Image
 
     /**
      * @ORM\ManyToOne(targetEntity=Announce::class, inversedBy="images")
+     * @ORM\JoinColumn()
      */
     private $announce;
 

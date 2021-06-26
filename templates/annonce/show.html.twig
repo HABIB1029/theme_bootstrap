@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+{% block title %}Annonce pour loyer
+{% endblock %}
+{% block body %}
+	<div class="container my-5">
+		<div class="row">
+			<div class="col-8">
+				<div class="card bg-dark text-white">
+					<img src="{{annonce.ImageCover}}" class="card-img" alt="...">
+					<div class="card-img-overlay text-center py-5" style="text-shadow: 1px 1px 2px black;">
+						<h5 class="card-title">{{ annonce.title}}</h5>
+						<p class="card-text">{{ annonce.introduction}}</p>
+						<p class="card-text">{{ annonce.rooms}}
+							chambres à
+							{{ annonce.formatedPrice }}
+							F /mois</p>
+					</div>
+				</div>
+			</div>
+            <div class="col-4">
+				<div class="card">
+                <div class="card-header">
+						<h5 class="text-center">Author</h5>
+				</div>
+                <div class="card-body">
+			<h6 class="text-uppercase mb-4 font-weight-bold">contact</h6>
+            <p>
+              <i class="fas fa-home mr-3"></i>Dakar, 170 parcelle
+            </p><p>
+              <i class="fas fa-phone mr-3"></i> 77 841 16 91
+            </p><p>
+              <i class="fas fa-envelope mr-3"></i>bibi11@gmail.com
+            </p><p>
+              <i class="fas fa-print mr-3"></i> +23 34 35 
+            </p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container my-5">
+		<div class="row">
+			<div class="col">
+				<div class="card">
+					<div class="card-header">
+						<h5>Description de l'appartement</h5>
+					</div>
+					<div class="card-body">
+						<blockquote class="blockquote mb-0">
+							<p>{{ annonce.description}}</p>
+						</blockquote>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container my-5">
+		<div class="row">
+        {% for image in annonce.images %}
+			<div class="col-4 col-md-4 col-lg-4">
+				<div class="card-deck">
+					<div class="card">
+						<img class="card-img-top" src="{{ image.imageUrl}}</" alt="Card image cap">
+						<div class="card-body">
+							<p class="card-text">{{image.description}}</p>
+							
+						</div>
+					</div>
+				</div>
+			</div>    
+        {% endfor %}
+		</div>
+    </div>
+
+
+	<div class="container my-5">
+    <div class="card">
+        <div class="card-header">
+			<h5 class="text-center">Commentaire</h5>
+		</div>
+            {% for comment in annonce.comments %}
+			{% if comment| length > 0 %}
+				<div class="row">
+					<div class="col-12 col-md-12 col-lg-12">
+						<div class="alert  alert-info">
+							<h5>{{comment.author}}</h5><h6 style="text-align:right;">{{comment.email}}</h6>
+							<p>{{comment.content}}</p>
+                             {# <p>edité le {{comment.createdAt}}</p> #}
+					    </div>
+				    </div>
+                </div>    
+			{% endif %}
+            {% endfor %}
+	</div>
+    </div>
+{% endblock %}

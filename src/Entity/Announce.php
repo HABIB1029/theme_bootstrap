@@ -71,7 +71,8 @@ class Announce
     private $creatAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="announce", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="announce")
+     * 
      */
     private $comments;
 
@@ -79,6 +80,11 @@ class Announce
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="announce")
      */
     private $images;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $introduction;
 
     public function __construct()
     {
@@ -91,10 +97,11 @@ class Announce
     * @ORM\PrePersist
     *@ORM\PreUpdate
     */
-    public function initSlug(){
+    public function initSlug()
+    {
         
             $slugger = new Slugify();
-            $this->slug = $slugger->slugify($this->title);
+            return $this->slug = $slugger->slugify($this->title);
         
     }
 
@@ -139,6 +146,11 @@ class Announce
         return $this;
     }
 
+    // public function getSlug(): string
+    // {
+    //     return  $slugger = (new Slugify())->slugify($this->title);
+    // }
+
     public function getPrice(): ?int
     {
         return $this->price;
@@ -149,6 +161,11 @@ class Announce
         $this->price = $price;
 
         return $this;
+    }
+
+    public function getformatedPrice(): ?string
+    {
+        return number_format($this->price, 0, '', ' ');
     }
 
     public function getAdresse(): ?string
@@ -267,6 +284,18 @@ class Announce
                 $image->setAnnounce(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIntroduction(): ?string
+    {
+        return $this->introduction;
+    }
+
+    public function setIntroduction(string $introduction): self
+    {
+        $this->introduction = $introduction;
 
         return $this;
     }
