@@ -10,6 +10,9 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Cocur\Slugify\Slugify;
+use DateTime;
+use Faker\Provider\cs_CZ\DateTime as Cs_CZDateTime;
+use Symfony\Component\Validator\Constraints\Date;
 
 class AppFixtures extends Fixture
 {
@@ -39,7 +42,7 @@ class AppFixtures extends Fixture
         $comment->setAuthor($faker->name())
                 ->setEmail($faker->email())
                 ->setContent($faker->text(150))
-                ->setCreatedAt($faker->dateTimeBetween('-4 month','now'))
+                ->setCreatedAt($faker->dateTimeBetween('-3 month','now'));
                  ;
 
         $manager ->persist($comment);

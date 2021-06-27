@@ -84,9 +84,9 @@
 				<div class="row">
 					<div class="col-12 col-md-12 col-lg-12">
 						<div class="alert  alert-info">
-							<h5>{{comment.author}}</h5><h6 style="text-align:right;">{{comment.email}}</h6>
+							<h6> {{comment.author}}       {{comment.email}} </h6>
 							<p>{{comment.content}}</p>
-                             {# <p>edité le {{comment.createdAt}}</p> #}
+                            <p>edité le {{ comment.createdAt|date("Y-m-d H:i:s") }}</p> 
 					    </div>
 				    </div>
                 </div>    
