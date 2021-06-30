@@ -37,7 +37,7 @@ class AppFixtures extends Fixture
         $announce->setIsAvailable(mt_rand(0,1));
         $announce->setCreatAt($faker->dateTimeBetween('-3 month','now'));
         
-        for($j = 0; $j < 3 ; $j++ ){
+        for($j = 0; $j < mt_rand(0,7) ; $j++ ){
         $comment = new comment();
         $comment->setAuthor($faker->name())
                 ->setEmail($faker->email())

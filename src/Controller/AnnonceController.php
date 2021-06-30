@@ -34,16 +34,16 @@ class AnnonceController extends AbstractController
     }
 
     /**
-    * @Route("/annonce", name="app_annouce")
+    * @Route("/annonce", name="app_annonce")
     */
     public function index(): Response
     {
 
-       $annonces = $this->repository->findAll();
+       $annonce = $this->repository->findAll();
 
         return $this->render('annonce/index.html.twig', [
 
-            'annonces' => $annonces 
+            'annonces' => $annonce 
            
         ]);
     }
