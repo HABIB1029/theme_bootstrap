@@ -4,52 +4,152 @@ namespace App\Controller\Admin;
 
 
 use App\Entity\Announce;
-use App\Repository\AnnounceRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Form\AnnounceType;
+use App\Repository\AnnounceRepository;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Loader\Configurator\form;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 
 
 class AdminAnnounceController extends AbstractController
 {
-    public function __construct(AnnounceRepository $repository)
+
+    private $repository;
+    public function __construct(AnnounceRepository $repository, EntityManagerInterface $manager)
     {
-        $this->repository=$repository;
+        $this->repository = $repository;
+        $this->manager = $manager;
+    }
+    /**
+     * @Route("annonces/admin", name="annonces.admin.index")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function index()
+    {
+        $annonces = $this->repository->findAll();
+        return ($this->render('admin_announce/index.html.twig', compact('annonces')));
 
-}
-/**
- * @Route("/admin", name="admin.annonce.index")
- * @return \Symfony\Component\HttpFoundation\Response
- */
-public function index()
-{
-    $annonces = $this->repository->findAll();
-    return ($this->render('admin_announce/index.html.twig', compact('annonces')));
+        // return $this->render('admin_announce/index.html.twig', [
 
-    // return $this->render('admin_announce/index.html.twig', [
+        //     'annonces' => $annonce 
 
-    //     'annonces' => $annonce 
-       
-    // ]);
-}
+        // ]);
+    }
 
-/**
- * @Route("/admin/{id}", name="admin.annonce.edit")
- * @return \Symfony\Component\HttpFoundation\Response
- */
-public function edit(Announce $annonce) : Response
-{   
-    $annonce = new Announce();
-    $form = $this->createForm(AnnounceType::class, $annonce);
-   
-    return $this->render('admin_announce/edit.html.twig', [
+    #[Route('/annonces/create', name: 'annonces.create')]
+    public function create(Request $request, EntityManagerInterface $manager): Response
+    {
+        $annonce = new Announce();
+        $form = $this->createForm(AnnounceType::class, $annonce);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Récupération de l'image depuis le formulaire
+            // dd($request);
+            $ImageCover = $form->get('imageCover')->getData();
+            if ($ImageCover) {
+                //création d'un nom pour l'image avec l'extension récupérée
+                $imageName = md5(uniqid()) . '.' . $ImageCover->guessExtension();
 
-       'annonce' => $annonce ,
-        'form' => $form->createView()
-    ]);
-}
+                //on déplace l'image dans le répertoire cover_image_directory avec le nom qu'on nn$annonce crée
+                $ImageCover->move(
+                    $this->getParameter('cover_image_directory'),
+                    $imageName
+                );
+
+                // on enregistre le nom de l'image dans la base de données
+                $annonce->setImageCover($imageName);
+            }
+            $manager->persist($annonce);
+            $manager->flush();
+
+            return $this->redirectToRoute('app_annonces');
+        }
+
+        return $this->render('admin_announce/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("annonces/admin/{id}", name="annonces.admin.edit")
+     * @param Announce $annonces
+     * @param Request $request
+     * @return Response
+     */
+    public function edit(Announce $annonce, Request $request)
+    {
+        $form = $this->createForm(AnnounceType::class, $annonce);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Récupération de l'image depuis le formulaire
+            // dd($request);
+            $ImageCover = $form->get('imageCover')->getData();
+            if ($ImageCover) {
+                //création d'un nom pour l'image avec l'extension récupérée
+                $imageName = md5(uniqid()) . '.' . $ImageCover->guessExtension();
+
+                //on déplace l'image dans le répertoire cover_image_directory avec le nom qu'on a crée
+                $ImageCover->move(
+                    $this->getParameter('cover_image_directory'),
+                    $imageName
+                );
+
+                // on enregistre le nom de l'image dans la base de données
+                $annonce->setImageCover($imageName);
+            }
+            $this->manager->persist($annonce);
+            $this->manager->flush();
+
+            return $this->redirectToRoute('app_annonces');
+        }
+        
+
+        return $this->render('admin_announce/edit.html.twig', [
+           // 'annonce' => $annonce,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("annonces/admin/{id}/delete", name="annonces.admin.delete")
+     * @param Announce $annonce
+     * @return RedirectResponse
+     */
+    public function delete(Announce $annonce): RedirectResponse
+    {
+
+
+            // $em = $this->getDoctrine()->getManager();
+            // $product = $em->getRepository(Announce::class)->find($annonce);
+    
+            // if (!$product) {
+            //     throw $this->createNotFoundException(
+            //         'No product found for id '.$annonce
+            //     );
+            // }
+    
+            // $em->remove($product);
+            // $em->flush();
+    
+            // return $this->redirectToRoute('annonces.admin.index', [
+            //     'annonce' => $product->getId()
+            // ]);
+        
+    
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($annonce);
+        $em->flush();
+
+        return $this->redirectToRoute("annonces.admin.index");
+    }
 
 
 }

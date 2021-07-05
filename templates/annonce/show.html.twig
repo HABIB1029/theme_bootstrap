@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-8">
 				<div class="card bg-dark text-white">
-					<img src="{{annonce.ImageCover}}" class="card-img" alt="...">
+					<img src="{{asset('uploads/cover_images/' ~ annonce.imageCover)}}" class="card-img" alt="...">
 					<div class="card-img-overlay text-center py-5" style="text-shadow: 1px 1px 2px black;">
 						<h5 class="card-title">{{ annonce.title}}</h5>
 						<p class="card-text">{{ annonce.introduction}}</p>
@@ -61,7 +61,7 @@
 			<div class="col-4 col-md-4 col-lg-4">
 				<div class="card-deck">
 					<div class="card">
-						<img class="card-img-top" src="{{ image.imageUrl}}</" alt="Card image cap">
+						<img class="card-img-top" src="{{ image.imageUrl}}" alt="Card image cap">
 						<div class="card-body">
 							<p class="card-text">{{image.description}}</p>
 							
@@ -86,7 +86,7 @@
 						<div class="alert  alert-info">
 							<h6> {{comment.author}}   <u>       </u>    {{comment.email}} </h6>
 							<p>{{comment.content}}</p>
-                            <p>edité le {{ comment.createdAt|date("Y-m-d H:i:s") }}</p> 
+                            <p>edité  {{ comment.createdAt|ago(locale='fr') }}</p> 
 					    </div>
 				    </div>
                 </div>    

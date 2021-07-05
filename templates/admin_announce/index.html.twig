@@ -3,28 +3,42 @@
 {% block title 'Gérer les biens' %}
 
 {% block body %}
-    <div class="container mt-4"
-         <h1>Gérer les biens</h1>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Titre </th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for a in annonces %}
-                
-            
-                <tr>
-                    <td>{{ a.title }}</td>
-                    <td>
-                        <a href="{{ path('admin.annonce.edit', {id: a.id}) }}" class="btn btn-secondary">Editer</a>
+	<div class="container mt-4">
+		<h1>Gérer les annonces</h1>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Titre</th>
+					<th>Prix</th>
+                    <th>Adresse</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for a in annonces %}
 
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    </div>
+
+					<tr>
+						<td>{{ a.title }}</td>
+						<td>{{ a.price }}</td>
+						<td>{{ a.adresse }}</td>
+						<td>
+							<a href="{{ path('annonces.admin.edit', {id: a.id}) }}" class="btn btn-secondary">
+                            <i class="bi bi-pencil-square">edite</i></a>
+							<a href="{{ path('annonces.admin.delete', {id: a.id}) }}" 
+                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette annonce ?')" >
+                            <i class="bi bi-trash-fill">delete</i></a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<div class="row">
+			<div class="col-md-3">
+				<div class="btn btn-secondary">
+					<a href="{{ path('annonces.create')}}">Publier une annonce</a>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

@@ -32,8 +32,8 @@ class AppFixtures extends Fixture
         $announce->setDescription($faker->text(200, false));
         $announce->setPrice(mt_rand(30000,60000));
         $announce->setAdresse($faker->address(3));
-        $announce->setImageCover("https://picsum.photos/1024/500?random=". mt_rand(1, 50000));
-        $announce->setRooms(mt_rand(0,5));
+        $announce->setImageCover('0e1cc71cdf57f7923887a68a74224d3e.jpg');
+        $announce->setRooms(mt_rand(1,5));
         $announce->setIsAvailable(mt_rand(0,1));
         $announce->setCreatAt($faker->dateTimeBetween('-3 month','now'));
         

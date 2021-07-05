@@ -18,6 +18,8 @@ class AnnounceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            //->add('slug')
+
             ->add('title', TextType::class, [
                 'attr' => [
                     'placeholder' => "Titre de l'annonce", 'class' => 'form-control'
@@ -59,7 +61,8 @@ class AnnounceType extends AbstractType
                 'label'    => 'disponible',
                 'required' => false,
             ])
-        ;
+            
+            ->getForm();
     }
 
     public function configureOptions(OptionsResolver $resolver)

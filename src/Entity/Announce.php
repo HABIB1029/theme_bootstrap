@@ -53,7 +53,7 @@ class Announce
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $ImageCover;
+    private $imageCover;
 
     /**
      * @ORM\Column(type="integer")
@@ -71,13 +71,13 @@ class Announce
     private $creatAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="announce")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="announce", cascade={"remove"})
      * 
      */
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="announce")
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="announce", cascade={"remove"})
      */
     private $images;
 
@@ -182,12 +182,12 @@ class Announce
 
     public function getImageCover(): ?string
     {
-        return $this->ImageCover;
+        return $this->imageCover;
     }
 
-    public function setImageCover(string $ImageCover): self
+    public function setImageCover(string $imageCover): self
     {
-        $this->ImageCover = $ImageCover;
+        $this->imageCover = $imageCover;
 
         return $this;
     }
@@ -221,11 +221,13 @@ class Announce
         return $this->creatAt;
     }
 
-    public function setCreatAt(\DateTimeInterface $creatAt): self
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function setCreatAt()
     {
-        $this->creatAt = $creatAt;
-
-        return $this;
+        $this->creatAt = new \DateTime();
     }
 
     /**

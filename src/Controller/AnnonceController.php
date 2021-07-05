@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AnnonceController extends AbstractController
 {   
-    // #[Route('/annonce', name: 'app_annonce')]
+    // #[Route('/annonces', name: 'app_annonce')]
     // public function index(): Response
     // {
     //     //on appelle la liste des annonces 
@@ -34,7 +34,7 @@ class AnnonceController extends AbstractController
     }
 
     /**
-    * @Route("/annonce", name="app_annonce")
+    * @Route("/annonces", name="app_annonces")
     */
     public function index(): Response
     {
@@ -60,7 +60,7 @@ class AnnonceController extends AbstractController
     //     ]);
     // }
     /**
-    * @Route("/annonce/{slug}-{id}", name="annonce.show", requirements={"slug": "[a-z0-9\-]*"})
+    * @Route("/annonces/{slug}-{id}", name="annonces.show", requirements={"slug": "[a-z0-9\-]*"})
     * @param Property $property
     * @return Response
     */
