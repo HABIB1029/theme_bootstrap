@@ -2,12 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Announce;
+use App\Form\CommentType;
 use App\Repository\AnnounceRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter; 
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class AnnonceController extends AbstractController
 {   
@@ -28,9 +32,10 @@ class AnnonceController extends AbstractController
     /**
     * var AnnounceRepository
     */
-    public function __construct(AnnounceRepository $repo)
+    public function __construct(AnnounceRepository $repo, EntityManagerInterface $manager)
     {
         $this->repository = $repo;
+        $this->manager = $manager;
     }
 
     /**
@@ -49,31 +54,41 @@ class AnnonceController extends AbstractController
     }
 
     
-    // public function show(Announce $annonce): Response
-    // {
-       
-    //     // $annonce = $this->repository->findOneBy($title);
-    //     return $this->render('annonce/show.html.twig', [
-
-    //         'annonces' => $annonce
-           
-    //     ]);
-    // }
     /**
-    * @Route("/annonces/{slug}-{id}", name="annonces.show", requirements={"slug": "[a-z0-9\-]*"})
-    * @param Property $property
+    * @Route("/annonces/{slug}", name="annonces.show", requirements={"slug": "[a-z0-9\-]*"})
+    * @param Announce $annonce
     * @return Response
     */
-    public function show(Announce $annonce, string $slug): Response
+    public function show(Announce $annonce, Request $request): Response
 {
-    if ($annonce->getSlug() !== $slug) {
-        return $this->redirectToRoute('annonce.show', [
-            'id' => $annonce->getId(),
+
+    $comment = new Comment();
+    $form = $this->createForm(CommentType::class, $comment);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()){
+        $em = $this->getDoctrine()->getManager();
+        $annonce->addComment($comment);
+        $em->persist($comment);
+        $em->flush();
+    
+    
+
+        return $this->redirectToRoute("annonces.show", [
             'slug' => $annonce->getSlug()
-        ], 301);
+        ]);
     }
     return $this->render('annonce/show.html.twig', [
-        'annonce' => $annonce
+        'annonce' => $annonce,
+        'form' => $form->createView()
     ]);
+
+
+        // if ($annonce->getSlug() !== $slug) {
+    //     return $this->redirectToRoute('annonces.show', [
+    //         'id' => $annonce->getId(),
+    //         'slug' => $annonce->getSlug()
+    //     ], 301);
+    // }
 }
 }

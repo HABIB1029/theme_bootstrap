@@ -3,15 +3,16 @@
 {% block title 'Gérer les biens' %}
 
 {% block body %}
-	<div class="container mt-4">
-		<h1>Gérer les annonces</h1>
+	<div class="container-fluid mt-4">
+		<h1 class="text-center">Gérer les annonces</h1>
 		<table class="table table-striped">
 			<thead>
 				<tr>
 					<th>Titre</th>
 					<th>Prix</th>
                     <th>Adresse</th>
-					<th>Actions</th>
+                    <th> Disponibilité</th>
+					<th>Actions</Disponibilité>
 				</tr>
 			</thead>
 			<tbody>
@@ -22,12 +23,16 @@
 						<td>{{ a.title }}</td>
 						<td>{{ a.price }}</td>
 						<td>{{ a.adresse }}</td>
-						<td>
-							<a href="{{ path('annonces.admin.edit', {id: a.id}) }}" class="btn btn-secondary">
-                            <i class="bi bi-pencil-square">edite</i></a>
-							<a href="{{ path('annonces.admin.delete', {id: a.id}) }}" 
+						{% if  a.isAvailable == true %}
+						<td><i class="fas fa-toggle-on"></i></td>
+						{% else %}
+							<td><i class="fas fa-toggle-off"></i></td>
+						{% endif %}
+						<td><a href="{{ path('annonces.admin.edit', {id: a.id}) }}" class="btn btn-secondary">
+                            <i class="fas fa-edit"></i></a>
+							<a href="{{ path('annonces.admin.delete', {id: a.id}) }}" class="btn btn-danger" 
                             onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette annonce ?')" >
-                            <i class="bi bi-trash-fill">delete</i></a>
+                            <i class="fas fa-trash-alt"></i></a>
 						</td>
 					</tr>
 				{% endfor %}

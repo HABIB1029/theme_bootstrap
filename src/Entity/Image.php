@@ -20,7 +20,7 @@ class Image
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $description;
+    private $description_img;
 
     /**
      * @ORM\ManyToOne(targetEntity=Announce::class, inversedBy="images")
@@ -39,14 +39,14 @@ class Image
     }
 
 
-    public function getDescription(): ?string
+    public function getDescription_img(): ?string
     {
-        return $this->description;
+        return $this->description_img;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription_img(string $description_img): self
     {
-        $this->description = $description;
+        $this->description_img = $description_img;
 
         return $this;
     }

@@ -44,11 +44,12 @@ class AnnounceType extends AbstractType
                 ]
             ])
             ->add('imageCover', FileType::class, [
+                'label'=> 'coverimage',
                 'mapped' => false,
                 'required' => false,
-                'attr' => [
-                    'placeholder' => "saisir l'URL", 'class' => 'form-control'
-                ]
+                // 'attr' => [
+                //     'placeholder' => "saisir l'URL", 'class' => 'form-control']
+                
             ])
             ->add('rooms', NumberType::class, [
                 'attr' => [
@@ -58,6 +59,21 @@ class AnnounceType extends AbstractType
             ->add('isAvailable', CheckboxType::class, [
                 'label'    => 'disponible',
                 'required' => false,
+            ])
+            ->add('images', FileType::class, [
+                'mapped' => false,
+                'required' => true,
+                'multiple' => true,
+                'label' => 'images details',
+                'attr'=>['class' => 'form-control-file',
+                'id' => "exampleFormControlFile1"]
+            ])
+            ->add('description_img', TextareaType::class, [
+                'mapped' => false,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => "decrire l'images", 'class' => 'form-control'
+                ]
             ])
         ;
     }

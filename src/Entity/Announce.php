@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\AnnounceRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Cocur\Slugify\Slugify; 
+use Doctrine\ORM\Mapping as ORM;
+use App\Repository\AnnounceRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=AnnounceRepository::class)
@@ -77,7 +77,7 @@ class Announce
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="announce", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="announce", cascade={"persist", "remove"})
      */
     private $images;
 
@@ -94,7 +94,7 @@ class Announce
 
     
     /**
-    * @ORM\PrePersist
+    *@ORM\PrePersist
     *@ORM\PreUpdate
     */
     public function initSlug()

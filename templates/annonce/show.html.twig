@@ -17,81 +17,111 @@
 					</div>
 				</div>
 			</div>
-            <div class="col-4">
-				<div class="card">
-                <div class="card-header">
-						<h5 class="text-center">Author</h5>
-				</div>
-                <div class="card-body">
-			<h6 class="text-uppercase mb-4 font-weight-bold">contact</h6>
-            <p>
-              <i class="fas fa-home mr-3"></i>Dakar, 170 parcelle
-            </p><p>
-              <i class="fas fa-phone mr-3"></i> 77 841 16 91
-            </p><p>
-              <i class="fas fa-envelope mr-3"></i>bibi11@gmail.com
-            </p><p>
-              <i class="fas fa-print mr-3"></i> +23 34 35 
-            </p>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="container my-5">
-		<div class="row">
-			<div class="col">
+			<div class="col-4">
 				<div class="card">
 					<div class="card-header">
-						<h5>Description de l'appartement</h5>
+						<h5 class="text-center">Author</h5>
 					</div>
 					<div class="card-body">
-						<blockquote class="blockquote mb-0">
-							<p>{{ annonce.description}}</p>
-						</blockquote>
+						<h6 class="text-uppercase mb-4 font-weight-bold">contact</h6>
+						<p>
+							<i class="fas fa-home mr-3"></i>Dakar, 170 parcelle
+						</p>
+						<p>
+							<i class="fas fa-phone mr-3"></i>
+							77 841 16 91
+						</p>
+						<p>
+							<i class="fas fa-envelope mr-3"></i>bibi11@gmail.com
+						</p>
+						<p>
+							<i class="fas fa-print mr-3"></i>
+							+23 34 35
+						</p>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="container my-5">
-		<div class="row">
-        {% for image in annonce.images %}
-			<div class="col-4 col-md-4 col-lg-4">
-				<div class="card-deck">
+		<div class="container my-5">
+			<div class="row">
+				<div class="col">
 					<div class="card">
-						<img class="card-img-top" src="{{ image.imageUrl}}" alt="Card image cap">
+						<div class="card-header">
+							<h5>Description de l'appartement</h5>
+						</div>
 						<div class="card-body">
-							<p class="card-text">{{image.description}}</p>
-							
+							<blockquote class="blockquote mb-0">
+								<p>{{ annonce.description}}</p>
+							</blockquote>
 						</div>
 					</div>
 				</div>
-			</div>    
-        {% endfor %}
+			</div>
 		</div>
-    </div>
+
+		<div class="container my-5">
+			<div class="row">
+				{% for image in annonce.images %}
+					<div class="col-4 col-md-4 col-lg-4">
+						<div class="card-deck">
+							<div class="card">
+								<img class="card-img-top" src="{{asset('uploads/images/' ~ image.imageUrl)}}" alt="Card image cap">
+								<div class="card-body">
+									<p class="card-text">{{image.description_img}}</p>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
 
 
-	<div class="container my-5">
-    <div class="card">
-        <div class="card-header">
-			<h5 class="text-center">Commentaire</h5>
+		<div class="container my-5">
+			<div class="card">
+				<div class="card-header">
+					<h5 class="text-center">Commentaire</h5>
+				</div>
+				{% for comment in annonce.comments %}
+					{% if comment| length > 0 %}
+						<div class="row">
+							<div class="col-12 col-md-12 col-lg-12">
+								<div class="alert  alert-info">
+									<h6>
+										{{comment.author}}
+										<u></u>
+										{{comment.email}}
+									</h6>
+									<p>{{comment.content}}</p>
+									<p>edité
+										{{ comment.createdAt|ago(locale='fr') }}</p>
+								</div>
+							</div>
+						</div>
+					{% endif %}
+				{% endfor %}
+			</div>
 		</div>
-            {% for comment in annonce.comments %}
-			{% if comment| length > 0 %}
-				<div class="row">
-					<div class="col-12 col-md-12 col-lg-12">
-						<div class="alert  alert-info">
-							<h6> {{comment.author}}   <u>       </u>    {{comment.email}} </h6>
-							<p>{{comment.content}}</p>
-                            <p>edité  {{ comment.createdAt|ago(locale='fr') }}</p> 
-					    </div>
-				    </div>
-                </div>    
-			{% endif %}
-            {% endfor %}
-	</div>
-    </div>
-{% endblock %}
+		<div class="container my-5">
+			<div class="row">
+				<h4 class="text-center">commenter cette annonce</h4>
+			</div>
+			{{ form_start(form) }}
+			<div class="row">
+				<div class="col-md-4">{{ form_row(form.author) }}</div>
+				<div class="col-md-6">{{ form_row(form.email) }}</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8">{{ form_row(form.content) }}</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<button type="submit" class="btn btn-primary">commenter</button>
+				</div>
+			</div>
+			{{ form_end(form) }}
+			
+		</div>
+	{% endblock %}

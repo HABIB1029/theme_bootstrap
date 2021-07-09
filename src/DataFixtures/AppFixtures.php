@@ -42,7 +42,7 @@ class AppFixtures extends Fixture
         $comment->setAuthor($faker->name())
                 ->setEmail($faker->email())
                 ->setContent($faker->text(150))
-                ->setCreatedAt($faker->dateTimeBetween('-3 month','now'));
+                ->setCreatedAt($faker->dateTimeBetween('-3 month','now'))
                  ;
 
         $manager ->persist($comment);
@@ -52,7 +52,7 @@ class AppFixtures extends Fixture
     for($k = 0; $k < mt_rand(0,7) ; $k++ ){
         $image = new image();
         $image->setImageUrl( "https://picsum.photos/300/200?random=". mt_rand(1, 50000));
-        $image ->setDescription($faker->sentence());
+        $image ->setDescription_img($faker->sentence());
 
         $manager ->persist($image);
         $announce->addImage($image); //permet à doctrine d'enregistrer dans la BD

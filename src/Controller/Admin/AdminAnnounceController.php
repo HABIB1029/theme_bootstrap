@@ -3,7 +3,9 @@
 namespace App\Controller\Admin;
 
 
+
 use App\Entity\Announce;
+use App\Entity\Image;
 use App\Form\AnnounceType;
 use App\Repository\AnnounceRepository;
 use Doctrine\Persistence\ObjectManager;
@@ -34,11 +36,13 @@ class AdminAnnounceController extends AbstractController
     public function index()
     {
         $annonces = $this->repository->findAll();
+        //$form = $this->createForm(AnnounceType::class, $annonces);
+        //$form->handleRequest($request);
         return ($this->render('admin_announce/index.html.twig', compact('annonces')));
 
         // return $this->render('admin_announce/index.html.twig', [
 
-        //     'annonces' => $annonce 
+        //     'annonces' => $annonces
 
         // ]);
     }
@@ -53,6 +57,7 @@ class AdminAnnounceController extends AbstractController
             // Récupération de l'image depuis le formulaire
             // dd($request);
             $ImageCover = $form->get('imageCover')->getData();
+            
             if ($ImageCover) {
                 //création d'un nom pour l'image avec l'extension récupérée
                 $imageName = md5(uniqid()) . '.' . $ImageCover->guessExtension();
@@ -65,6 +70,25 @@ class AdminAnnounceController extends AbstractController
 
                 // on enregistre le nom de l'image dans la base de données
                 $annonce->setImageCover($imageName);
+            }
+
+            $images = $form->get('images')->getData();
+            // on boucle sur les images
+            foreach( $images as $image){
+                // on génere un nouveau fichier
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+                //on déplace l'image dans le répertoire cover_image_directory avec le nom qu'on nn$annonce crée
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+
+                // on enregistre le nom de l'image dans la base de données
+                $img = new Image();
+                $img->setImageUrl($fichier);
+                $img->setDescription_img('description');
+                $annonce->addImage($img);
+    
             }
             $manager->persist($annonce);
             $manager->flush();
@@ -125,25 +149,6 @@ class AdminAnnounceController extends AbstractController
      */
     public function delete(Announce $annonce): RedirectResponse
     {
-
-
-            // $em = $this->getDoctrine()->getManager();
-            // $product = $em->getRepository(Announce::class)->find($annonce);
-    
-            // if (!$product) {
-            //     throw $this->createNotFoundException(
-            //         'No product found for id '.$annonce
-            //     );
-            // }
-    
-            // $em->remove($product);
-            // $em->flush();
-    
-            // return $this->redirectToRoute('annonces.admin.index', [
-            //     'annonce' => $product->getId()
-            // ]);
-        
-    
         $em = $this->getDoctrine()->getManager();
         $em->remove($annonce);
         $em->flush();
