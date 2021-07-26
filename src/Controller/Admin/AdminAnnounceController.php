@@ -73,6 +73,7 @@ class AdminAnnounceController extends AbstractController
             }
 
             $images = $form->get('images')->getData();
+            $desc_img = $form->get('description_img')->getData();
             // on boucle sur les images
             foreach( $images as $image){
                 // on génere un nouveau fichier
@@ -86,12 +87,13 @@ class AdminAnnounceController extends AbstractController
                 // on enregistre le nom de l'image dans la base de données
                 $img = new Image();
                 $img->setImageUrl($fichier);
-                $img->setDescription_img('description');
+                $img->setDescription_img( $desc_img);
                 $annonce->addImage($img);
     
             }
             $manager->persist($annonce);
             $manager->flush();
+            $this->addFlash('success', 'Article Created! Knowledge is power!');
 
             return $this->redirectToRoute('app_annonces');
         }

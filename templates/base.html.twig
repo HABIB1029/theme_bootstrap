@@ -57,6 +57,11 @@
 		<main>
 		{% block body %}{% endblock %}
 		</main>
+		{% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
 		<!--footer-->
 		<footer class="mt-5 bg-light py-4 text-center">
 			<p>Copyright Simplon

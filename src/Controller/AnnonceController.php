@@ -19,7 +19,7 @@ class AnnonceController extends AbstractController
     // public function index(): Response
     // {
     //     //on appelle la liste des annonces 
-    // //une autre d'utiliser les donnees de la BD
+    // //une autre façon d'utiliser les donnees de la BD
     //     $annonce = $this->getDoctrine()->getRepository(Announce::class)->findAll();
         
     //     return $this->render('annonce/index.html.twig', ['annonce' => $annonce]);
