@@ -78,7 +78,7 @@ class AdminAnnounceController extends AbstractController
             foreach( $images as $image){
                 // on génere un nouveau fichier
                 $fichier = md5(uniqid()) . '.' . $image->guessExtension();
-                //on déplace l'image dans le répertoire cover_image_directory avec le nom qu'on nn$annonce crée
+                //on déplace l'image dans le répertoire cover_image_directory avec le nom qu'on à crée
                 $image->move(
                     $this->getParameter('images_directory'),
                     $fichier
